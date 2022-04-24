@@ -1,0 +1,4 @@
+*.vcxproj.user
+*.txt.user
+CMakeSettings.json
+bin-*/

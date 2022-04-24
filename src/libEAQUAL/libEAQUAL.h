@@ -31,17 +31,18 @@
 #if !defined(__LIBEAQUAL_HEADER_INCLUDED__)
 #define __LIBEAQUAL_HEADER_INCLUDED__
 
-
-// define C API for libEAQUAL
-#ifdef WIN32
-
-    #ifndef EAQUALAPI
-        #define EAQUALAPI __stdcall
-    #endif
+#ifdef STATIC_EAQUAL
+   #define EAQUALAPI
 #else
-    #ifndef EAQUALAPI
-        #define EAQUALAPI
-    #endif
+   #ifdef WIN32
+      #ifdef EAQUAL_EXPORTS
+         #define EAQUALAPI __declspec( dllexport )
+      #else
+         #define EAQUALAPI __declspec( dllimport )
+      #endif
+   #else
+      #define EAQUALAPI __attribute__( ( visibility( "default" ) ) )
+   #endif
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +147,7 @@ extern "C" {
 //  @creation_date: 14.12.2001
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-void*           EAQUALAPI   eaqualCreateInstance();
+void        EAQUALAPI  *eaqualCreateInstance();
 
 
 /////////////////////////////////////////////////////////////////////////////////////

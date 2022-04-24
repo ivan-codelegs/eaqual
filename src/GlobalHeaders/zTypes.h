@@ -36,7 +36,7 @@
 
 
 
-#if defined(__BORLANDC__) || defined (__WATCOMC__) || defined(_MSC_VER) || defined(__ZTC__) || defined(__HIGHC__)
+#if defined(__BORLANDC__) || defined (__WATCOMC__) || defined(_MSC_VER) || defined(__ZTC__) || defined(__HIGHC__) || defined(__APPLE__)
 
     #ifdef FLOAT 
     #undef FLOAT 

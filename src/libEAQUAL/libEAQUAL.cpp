@@ -44,7 +44,7 @@
 //  @creation_date: 14.12.2001
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-void* EAQUALAPI eaqualCreateInstance()
+void* eaqualCreateInstance()
 {
     CRunAnalysis    *pRunAnalysis = new CRunAnalysis();
     
@@ -64,7 +64,7 @@ void* EAQUALAPI eaqualCreateInstance()
 //  @creation_date: 15.12.2001
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-unsigned int    EAQUALAPI   eaqualInitInstance(void *pInstance, stCLOptions *pCLOptions, WaveFormat *pWFormat)
+unsigned int eaqualInitInstance(void *pInstance, stCLOptions *pCLOptions, WaveFormat *pWFormat)
 {
     CRunAnalysis *pInstancePointer  = (CRunAnalysis*)(pInstance);
     
@@ -81,7 +81,7 @@ unsigned int    EAQUALAPI   eaqualInitInstance(void *pInstance, stCLOptions *pCL
 //  @creation_date: 14.12.2001
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-void EAQUALAPI  eaqualKillInstance(void *pInstance)
+void eaqualKillInstance(void *pInstance)
 {
     delete ((CRunAnalysis*)(pInstance));
     return;
@@ -101,7 +101,7 @@ void EAQUALAPI  eaqualKillInstance(void *pInstance)
 //  @creation_date: 14.12.2001
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-unsigned int EAQUALAPI  eaqualEndInstance(void *pInstance, double **pfResults, int *pResultLength)
+unsigned int eaqualEndInstance(void *pInstance, double **pfResults, int *pResultLength)
 {
     CRunAnalysis *pInstancePointer  = (CRunAnalysis*)(pInstance);
     
@@ -123,7 +123,7 @@ unsigned int EAQUALAPI  eaqualEndInstance(void *pInstance, double **pfResults, i
 //  @creation_date: 14.12.2001
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-unsigned int EAQUALAPI  eaqualProcessInstance(void *pInstance, stAudioData *pAudioData)
+unsigned int eaqualProcessInstance(void *pInstance, stAudioData *pAudioData)
 {
     CRunAnalysis *pInstancePointer  = (CRunAnalysis*)(pInstance);
     
@@ -143,7 +143,7 @@ unsigned int EAQUALAPI  eaqualProcessInstance(void *pInstance, stAudioData *pAud
 //  @creation_date: 06.01.2002
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-unsigned int EAQUALAPI  eaqualGetBlockResults(  void            *pInstance, stBlockResults  *pstBlockResults)
+unsigned int eaqualGetBlockResults(  void            *pInstance, stBlockResults  *pstBlockResults)
 {
     CRunAnalysis *pInstancePointer  = (CRunAnalysis*)(pInstance);
     
