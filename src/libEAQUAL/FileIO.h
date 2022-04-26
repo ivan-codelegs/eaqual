@@ -107,7 +107,7 @@ private:
     //  @creation_date: 15.01.2002
     //  @last_modified: 
     /////////////////////////////////////////////////////////////////////////////////////
-    inline zINT8*   fioInt2String(  zINT i);
+    inline zINT8*   fioInt2String(  zINT64 i);
         
 public:
     CFileIO();

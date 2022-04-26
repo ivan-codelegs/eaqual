@@ -45,7 +45,7 @@ CFileIO::CFileIO()
     iNumFull            = 0;
     m_bWritingFinished  = _FALSE;
 
-    pcHandle = fioInt2String(reinterpret_cast<zINT32>(this));
+    pcHandle = fioInt2String(reinterpret_cast<zINT64>(this));
     strcat(pcHandle, ".tmp");
     m_pFFile            = fopen(pcHandle, "wb");
 
@@ -70,9 +70,9 @@ CFileIO::~CFileIO()
         strcat(cFile, pcHandle);
         strcat(cFile, ".tmp");
         system(cFile);
-    #elif defined (__unix__)
+    #elif defined (__unix__) || defined(__APPLE__)
         strcpy(cFile, "rm ");
-        pcHandle = fioInt2String(reinterpret_cast<zINT32>(this));
+        pcHandle = fioInt2String(reinterpret_cast<zINT64>(this));
         strcat(cFile, pcHandle);
         strcat(cFile, ".tmp");
         system(cFile);
@@ -181,7 +181,7 @@ zERROR  CFileIO::fioReadTmpFile(eaqstEAQUALInstance *pInstance)
         
 
     // open temporary file
-    pcHandle = fioInt2String(reinterpret_cast<zINT32>(this));
+    pcHandle = fioInt2String(reinterpret_cast<zINT64>(this));
     strcat(pcHandle, ".tmp");
     m_pFFile        = fopen(pcHandle, "rb");
 
@@ -253,10 +253,10 @@ inline zERROR   CFileIO::fioSortMOVs(eaqstEAQUALInstance *pInstance, zFLOAT *pfT
 //  @creation_date: 15.01.2002
 //  @last_modified: 
 /////////////////////////////////////////////////////////////////////////////////////
-inline zINT8* CFileIO::fioInt2String(zINT32 i)
+inline zINT8* CFileIO::fioInt2String(zINT64 i)
 {
-    static char buf[32];
+    static char buf[64];
     
-    sprintf(buf, "%x", i);
+    sprintf(buf, "%lx", i);
     return buf;
 }

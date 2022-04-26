@@ -36,7 +36,7 @@
 
 
 
-#if defined(__BORLANDC__) || defined (__WATCOMC__) || defined(_MSC_VER) || defined(__ZTC__) || defined(__HIGHC__) || defined(__APPLE__)
+#if defined(__BORLANDC__) || defined (__WATCOMC__) || defined(_MSC_VER) || defined(__ZTC__) || defined(__HIGHC__)
 
     #ifdef FLOAT 
     #undef FLOAT 
@@ -78,7 +78,7 @@
     typedef zINT32              zERROR;
     #error  PLEASE CHECK "zTypes.h" for correct typedefs!
 
-#elif defined(__unix__) || defined(__unix)
+#elif defined(__unix__) || defined(__unix) || defined(__APPLE__)
 
     //zplane.typedefs
 
