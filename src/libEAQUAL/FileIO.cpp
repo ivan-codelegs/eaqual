@@ -55,7 +55,7 @@ CFileIO::~CFileIO()
 {
     zINT8   cHandle[8],
             *pcHandle = cHandle,
-            cFile[16];
+            cFile[32];
     
     if (m_pFFile) fclose(m_pFFile);
 
