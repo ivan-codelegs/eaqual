@@ -264,6 +264,5 @@ inline zINT8* CFileIO::fioInt2String(zINT64 i)
         sprintf(buf, "/tmp/%lx", i);
     #endif
     
-    sprintf(buf, "%lx", i);
     return buf;
 }
