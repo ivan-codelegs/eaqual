@@ -256,6 +256,7 @@ inline zERROR   CFileIO::fioSortMOVs(eaqstEAQUALInstance *pInstance, zFLOAT *pfT
 inline zINT8* CFileIO::fioInt2String(zINT64 i)
 {
     static char buf[64];
+    memset( buf, 0, 64 );
     
     #if defined(_MSC_VER)
         sprintf(buf, "%lx", i);
