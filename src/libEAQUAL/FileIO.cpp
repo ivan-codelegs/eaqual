@@ -32,6 +32,11 @@
 #include "EAQUALCore.h"
 #include "FileIO.h"
 
+#if defined(_MSC_VER)       
+    #include <Windows.h>
+#elif defined (__unix__) || defined(__APPLE__)
+    #include <unistd.h>
+#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -39,23 +44,24 @@
 
 CFileIO::CFileIO()
 {
-    zINT8   cHandle[12],
-            *pcHandle = cHandle;
-
     iNumFull            = 0;
     m_bWritingFinished  = _FALSE;
 
-    pcHandle = fioInt2String(reinterpret_cast<zINT64>(this));
-    strcat(pcHandle, ".tmp");
-    m_pFFile            = fopen(pcHandle, "wb");
+#if defined(_MSC_VER)       
+    const unsigned long pid = GetCurrentProcessId();
+#elif defined (__unix__) || defined(__APPLE__)
+    const unsigned long pid = getpid();
+#endif
+
+    sprintf(m_PID, "%lu.tmp", pid);
+
+    m_pFFile            = fopen(m_PID, "wb");
 
 }
 
 CFileIO::~CFileIO()
 {
-    zINT8   cHandle[8],
-            *pcHandle = cHandle,
-            cFile[32];
+    zINT8 cFile[_MAX_PID_SIZE + 8];
     
     if (m_pFFile) fclose(m_pFFile);
 
@@ -66,15 +72,11 @@ CFileIO::~CFileIO()
     //delete temporary files
     #if defined(_MSC_VER)       
         strcpy(cFile, "del ");
-        pcHandle = fioInt2String(reinterpret_cast<zINT32>(this));
-        strcat(cFile, pcHandle);
-        strcat(cFile, ".tmp");
+        strcat(cFile, m_PID);
         system(cFile);
     #elif defined (__unix__) || defined(__APPLE__)
         strcpy(cFile, "rm ");
-        pcHandle = fioInt2String(reinterpret_cast<zINT64>(this));
-        strcat(cFile, pcHandle);
-        strcat(cFile, ".tmp");
+        strcat(cFile, m_PID);
         system(cFile);
     #endif
 
@@ -156,8 +158,6 @@ zERROR  CFileIO::fioReadTmpFile(eaqstEAQUALInstance *pInstance)
             iNumOfMOVs      = (pInstance->bModelType == _BASIC) ? _NUM_MOV_BASIC : _NUM_MOV_ADVANCED,
             iNumOfChannels  = pInstance->WaveFormat.iNumOfChannel;
     zUINT32 uiNumOfFrames   = pInstance->uiFramesProcessed;
-    zINT8   cHandle[12],
-            *pcHandle = cHandle;
     
     if (!m_bWritingFinished)
         return _ILLEGAL_FUNCTION_CALL;
@@ -181,9 +181,7 @@ zERROR  CFileIO::fioReadTmpFile(eaqstEAQUALInstance *pInstance)
         
 
     // open temporary file
-    pcHandle = fioInt2String(reinterpret_cast<zINT64>(this));
-    strcat(pcHandle, ".tmp");
-    m_pFFile        = fopen(pcHandle, "rb");
+    m_pFFile        = fopen(m_PID, "rb");
 
     // read the temporary data
     if ( fread(pfTempBuffer, sizeof(zFLOAT), uiNumOfFrames * iNumOfMOVs * iNumOfChannels,m_pFFile) != uiNumOfFrames * iNumOfMOVs * iNumOfChannels) return _UNKNOWN_ERROR;
@@ -239,30 +237,4 @@ inline zERROR   CFileIO::fioSortMOVs(eaqstEAQUALInstance *pInstance, zFLOAT *pfT
         }
     }
     return _NO_ERROR;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//  @method:        fioInt2String
-//  @parameter:     - zINT              i       integer
-//  @result:        - zINT8             *buf    resulting string
-//  @author:        Alexander Lerch (AL) (mailto:lerch@zplane.de)
-//  @company:       - Heinrich- Hertz-Institut fuer Nachrichtentechnik GmbH (http://www.hhi.de)
-//                  - zplane.development (http://www.zplane.de)
-//  @notes:         converts integer value to string
-//  @creation_date: 15.01.2002
-//  @last_modified: 
-/////////////////////////////////////////////////////////////////////////////////////
-inline zINT8* CFileIO::fioInt2String(zINT64 i)
-{
-    static char buf[64];
-    memset( buf, 0, 64 );
-    
-    #if defined(_MSC_VER)
-        sprintf(buf, "%lx", i);
-    #elif defined (__unix__) || defined(__APPLE__)
-        sprintf(buf, "/tmp/%lx", i);
-    #endif
-    
-    return buf;
 }

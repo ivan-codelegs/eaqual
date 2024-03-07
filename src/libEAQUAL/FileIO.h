@@ -35,6 +35,7 @@
 #include <stdio.h>
 
 #define _FILE_OUT_BUFFER_LENGTH (_FFT_LENGTH<<3)
+#define _MAX_PID_SIZE 64
 
 /////////////////////////////////////////////////////////////////////////////////////
 //  @struct:        stMOVs
@@ -75,6 +76,7 @@ class CFileIO
 private:
     zFLOAT  m_afFileOutBuffer[_FILE_OUT_BUFFER_LENGTH];
     stMOVs  m_TimeMOVChannel[_NUM_CHANNELS_MAX];
+    zINT8   m_PID[_MAX_PID_SIZE];
     zINT    iNumFull;
     FILE    *m_pFFile;
     zBOOL   m_bWritingFinished;
